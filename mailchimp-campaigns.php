@@ -48,6 +48,7 @@ function mailchimpcampaigns_register_labels()
         // Lists related
         'recipients' => __('Recipients', MCC_TEXT_DOMAIN),
         'list_id' => __('List ID', MCC_TEXT_DOMAIN),
+        'list_is_active' => __('List Active', MCC_TEXT_DOMAIN),
         'list_name' => __('List name', MCC_TEXT_DOMAIN),
         'segment_text' => __('Segment', MCC_TEXT_DOMAIN),
         'recipient_count' => __('Recipients', MCC_TEXT_DOMAIN),
