@@ -62,7 +62,7 @@ class Mailchimp
         $this->settings['api_datacentre'] = $datacentre;
         $this->settings['api_version'] =  MCC_API_VERSION;
         $this->settings['api_endpoint'] = $datacentre ? 'https://'. $this->settings['api_datacentre'].'.api.mailchimp.com/'.$this->settings['api_version'] : null;
-    
+
         if (! $this->test()) {
             return;
         }
@@ -90,7 +90,7 @@ class Mailchimp
         return $test;
     }
 
-    
+
     /**
         * Determine if a call return an error
         * @param object $ The call's , previously decoded by our custom property $this->decode().
@@ -99,7 +99,7 @@ class Mailchimp
     public function is_error($data = false)
     {
         $response = ! $data ? $this->last_call : $data;
-        
+
         if (is_wp_error($response)) {
             return true;
         }
@@ -107,7 +107,7 @@ class Mailchimp
         if (isset($response->response)) {
             $response = $response->response;
         }
-        
+
         if (isset($response['response'])) {
             $response = $response['response'];
         }
@@ -121,7 +121,7 @@ class Mailchimp
             $code = !$code && isset($response->code) ? $response->code : false;
             $message = isset($response->message) ? $response->message : false;
         }
-        
+
         if (!$code || $code == 200) {
             return false;
         }
@@ -167,7 +167,7 @@ class Mailchimp
     public function get($prop = 'last_call')
     {
         $data = $this->{$prop};
-        
+
         if (isset($data->body)) {
             $data = $data->body;
         }

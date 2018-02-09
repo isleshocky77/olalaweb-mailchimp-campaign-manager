@@ -77,7 +77,7 @@ function mailchimpcampaigns_add_css()
 {
     wp_register_style('mailchimpcampaigns_metaboxes', plugins_url('css/mailchimpcampaigns_metaboxes.css', __FILE__));
     wp_enqueue_style('mailchimpcampaigns_metaboxes');
-    
+
     wp_register_style('mailchimpcampaigns_admin', plugins_url('css/mailchimpcampaigns_admin.css', __FILE__));
     wp_enqueue_style('mailchimpcampaigns_admin');
 }

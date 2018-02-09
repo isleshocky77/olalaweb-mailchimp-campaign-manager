@@ -45,7 +45,7 @@ class MailchimpPost
         if (is_array($meta)) {
             $meta = current($meta);
         }
-      
+
         return maybe_unserialize($meta);
     }
 
@@ -58,10 +58,10 @@ class MailchimpPost
         if (substr($meta_key, 0, $prefix_length) == MCC_META_PRE) {
             $meta_key = substr($meta_key, $prefix_length);
         }
-    
+
         return $meta_key;
     }
-  
+
     /**
     *
     */

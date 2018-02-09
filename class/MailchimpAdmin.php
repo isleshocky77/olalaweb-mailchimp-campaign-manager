@@ -55,7 +55,7 @@ class MailchimpAdmin extends Mailchimp
                 // This prints out all hidden setting fields
                 settings_fields('mailchimpcampaign_option_group');
         do_settings_sections('mailchimpcampaign-admin');
-                
+
         // Display submit button
         submit_button('Save settings', 'primary', 'submit-form', false);
 
@@ -111,7 +111,7 @@ class MailchimpAdmin extends Mailchimp
             'mailchimpcampaigns_settings_section', // Section
             array( 'label_for' => 'mailchimpcampaigns_cpt_name' ) // Form label
         );
-      
+
         // Lab
         add_settings_field(
             'show_preview',
@@ -139,7 +139,7 @@ class MailchimpAdmin extends Mailchimp
         if (isset($input['cpt_name'])) {
             $new_input['cpt_name'] = sanitize_title(sanitize_text_field($input['cpt_name']));
         }
-        
+
         // Saving API KEY
         if (isset($input['api_key'])) {
             $new_input['api_key'] = sanitize_text_field($input['api_key']);
@@ -181,7 +181,7 @@ class MailchimpAdmin extends Mailchimp
     {
         print __('Enter your Mailchimp settings below:', MCC_TEXT_DOMAIN);
     }
-    
+
     /**
     * Fields
     */
@@ -227,7 +227,7 @@ class MailchimpAdmin extends Mailchimp
         echo '<input type="checkbox" id="show-preview" name="mailchimpcampaigns_settings[show_preview]" value="1"'.$checked.' />' .
             ' Activate campaigns preview in admin screens';
     }
-  
+
     /*
     * Help tab for admin screens
     */

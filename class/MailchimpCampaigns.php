@@ -24,7 +24,7 @@ class MailchimpCampaigns extends Mailchimp
         if ($renew) {
             $this->fetch();
         }
-            
+
         return $this->campaigns->campaigns;
     }
 
@@ -92,7 +92,7 @@ class MailchimpCampaigns extends Mailchimp
         $args = $this->args(array('count'=>$count));
         $results = $this->call('campaigns', $args);
         $this->campaigns = json_decode($results->last_call['body']);
-        
+
         // Update the time
         $this->last_updated = current_time('mysql');
     }

@@ -103,7 +103,7 @@ class MailchimpCustomPostType extends Mailchimp
     {
         $metas = get_post_meta($post_ID);
         $output = isset($metas[MCC_META_PRE.$column_name][0]) ?  $metas[MCC_META_PRE.$column_name][0] : null;
-        
+
         if ($column_name == 'shortcode') {
             $output = '[campaign id="'.$metas['mcc_id'][0].'"]';
         }

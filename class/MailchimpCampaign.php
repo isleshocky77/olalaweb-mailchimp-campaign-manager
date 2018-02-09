@@ -31,7 +31,7 @@ class MailChimpCampaign extends Mailchimp
         if (! $this->test()) {
             return;
         }
-      
+
         $this->campaign = $campaign;
         $this->post_type = empty($this->settings->cpt_name) ? MCC_DEFAULT_CPT : $this->settings->cpt_name;
         $this->find(); // get exisitng $post or create a new empty Post object
@@ -100,7 +100,7 @@ class MailChimpCampaign extends Mailchimp
         foreach ($this->campaign as $meta_key => $meta_value) {
             $this->post_metas[MCC_META_PRE . $meta_key] = $meta_value;
         }
-    
+
         return $this;
     }
 
@@ -119,7 +119,7 @@ class MailChimpCampaign extends Mailchimp
         if (!is_array($scopes)) {
             $scopes = array($scopes);
         }
-    
+
         foreach ($scopes as $scope) {
             // Save specific data for each scope
             $data = $this->call('campaigns/'.$this->campaign->id.'/'.$scope)->get();
@@ -162,7 +162,7 @@ class MailChimpCampaign extends Mailchimp
     {
         // Save || Update post
         $post_id = $this->post_exists ? wp_update_post($this->post, true) : wp_insert_post($this->post, true);
-    
+
         // Save the post url in its content to display it on front.
         if (! $this->post_exists) {
             $cid_meta_key = MCC_META_PRE . 'id';

@@ -6,7 +6,7 @@ if (! class_exists('MailchimpCampaignMetabox')) :
  */
 class MailchimpCampaignMetabox
 {
- 
+
     // Settings
     public $settings;
     public $post;
@@ -22,7 +22,7 @@ class MailchimpCampaignMetabox
         $this->post_type = empty($this->settings['cpt_name']) ? MCC_DEFAULT_CPT : $this->settings['cpt_name'];
         $this->init_metabox();
     }
- 
+
     /**
     * Meta box initialization.
     */
