@@ -75,7 +75,7 @@ class MailchimpCampaigns extends Mailchimp
             unset($campaigns[$i]); // Remove campaigns from array() just for fun
         }
         // Display result
-        $this->admin_notice(__( $this->count() . ' campaigns have been imported.<br/>See the <a href="/wp-admin/edit.php?post_type='.$cpt_name.'">list</a>', MCC_TEXT_DOMAIN) );
+        $this->admin_notice(__( $this->count() . ' campaigns have been imported.<br/>See the <a href="' . admin_url('/edit.php?post_type='.$cpt_name) . '">list</a>', MCC_TEXT_DOMAIN) );
     }
 
     /**
