@@ -1,10 +1,10 @@
 <?php
 /*
-  	Plugin Name: MailChimp Campaigns
+    Plugin Name: MailChimp Campaigns
     Plugin Script: mailchimp-campaigns.php
     Plugin URI:   http://wordpress.org/extend/plugins/mailchimp-campaigns/
     Description: Display your MailChimp campaigns with simple shortcodes.
-    Author: MatthieuScarset 
+    Author: MatthieuScarset
     Author URI: http://matthieuscarset.com/
     License: GPL
     Version: 3.1.0
@@ -15,20 +15,23 @@
 */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if (! defined('ABSPATH')) {
+    exit;
+}
 
 // Define globals
-define( 'MCC_VERSION', '3.0.6' );
-define( 'MCC_API_VERSION', '3.0' );
-define( 'MCC_DEFAULT_CPT',  'newsletter' );
-define( 'MCC_DEFAULT_CPT_STATUS',  'publish' );
-define( 'MCC_TEXT_DOMAIN', 'mailchimpcampaigns' );
-define( 'MCC_META_PRE', 'mcc_' );
-define( 'MCC_META_KEY_ID', MCC_META_PRE .'id' );
-define( 'MCC_PLUGIN_ROOT_DIR', plugin_dir_path( __FILE__ ) );
+define('MCC_VERSION', '3.0.6');
+define('MCC_API_VERSION', '3.0');
+define('MCC_DEFAULT_CPT', 'newsletter');
+define('MCC_DEFAULT_CPT_STATUS', 'publish');
+define('MCC_TEXT_DOMAIN', 'mailchimpcampaigns');
+define('MCC_META_PRE', 'mcc_');
+define('MCC_META_KEY_ID', MCC_META_PRE .'id');
+define('MCC_PLUGIN_ROOT_DIR', plugin_dir_path(__FILE__));
 
-function mailchimpcampaigns_register_labels(){
-    $labels = array( 
+function mailchimpcampaigns_register_labels()
+{
+    $labels = array(
         'id' => __('ID', MCC_TEXT_DOMAIN),
         'type' => __('Type', MCC_TEXT_DOMAIN),
         'status' => __('Status', MCC_TEXT_DOMAIN),
@@ -58,61 +61,64 @@ function mailchimpcampaigns_register_labels(){
         '_edit_lock' => __('Edit lock', MCC_TEXT_DOMAIN),
         '_edit_last' => __('Edit last', MCC_TEXT_DOMAIN),
     );
-    if( get_option('mailchimpcampaigns_labels', false) ) {
+    if (get_option('mailchimpcampaigns_labels', false)) {
         update_option('mailchimpcampaigns_labels', $labels);
     } else {
         add_option('mailchimpcampaigns_labels', $labels);
     }
-    return $labels; 
+    return $labels;
 }
-register_activation_hook( __FILE__, 'mailchimpcampaigns_register_labels' );
+register_activation_hook(__FILE__, 'mailchimpcampaigns_register_labels');
 /**
  * Enqueue plugin style-file
  */
-function mailchimpcampaigns_add_css() {
-    wp_register_style( 'mailchimpcampaigns_metaboxes', plugins_url('css/mailchimpcampaigns_metaboxes.css', __FILE__) );
-    wp_enqueue_style( 'mailchimpcampaigns_metaboxes' );
+function mailchimpcampaigns_add_css()
+{
+    wp_register_style('mailchimpcampaigns_metaboxes', plugins_url('css/mailchimpcampaigns_metaboxes.css', __FILE__));
+    wp_enqueue_style('mailchimpcampaigns_metaboxes');
     
-    wp_register_style( 'mailchimpcampaigns_admin', plugins_url('css/mailchimpcampaigns_admin.css', __FILE__) );
-    wp_enqueue_style( 'mailchimpcampaigns_admin' );
+    wp_register_style('mailchimpcampaigns_admin', plugins_url('css/mailchimpcampaigns_admin.css', __FILE__));
+    wp_enqueue_style('mailchimpcampaigns_admin');
 }
-add_action( 'admin_enqueue_scripts', 'mailchimpcampaigns_add_css' );
-add_action( 'wp_enqueue_scripts', 'mailchimpcampaigns_add_css' ); 
+add_action('admin_enqueue_scripts', 'mailchimpcampaigns_add_css');
+add_action('wp_enqueue_scripts', 'mailchimpcampaigns_add_css');
 
 /**
  * Enqueue plugin style-file
  */
-function mailchimpcampaigns_add_js() {
-    wp_enqueue_script( 'ajax-script', plugins_url( '/js/mailchimpcampaigns_admin.js', __FILE__ ), array('jquery') );
+function mailchimpcampaigns_add_js()
+{
+    wp_enqueue_script('ajax-script', plugins_url('/js/mailchimpcampaigns_admin.js', __FILE__), array('jquery'));
 }
-add_action( 'admin_enqueue_scripts', 'mailchimpcampaigns_add_js' );
+add_action('admin_enqueue_scripts', 'mailchimpcampaigns_add_js');
 
 // Include and instanciate our classes
-require_once( MCC_PLUGIN_ROOT_DIR . 'class/Mailchimp.php');
-require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpPost.php');
-require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCustomPostType.php');
+require_once(MCC_PLUGIN_ROOT_DIR . 'class/Mailchimp.php');
+require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpPost.php');
+require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCustomPostType.php');
 $MCCPostType = new MailchimpCustomPostType();
 
 /**
  * Implements hook_init()
  */
-function mailchimpcampaigns_init(){
+function mailchimpcampaigns_init()
+{
     // Get required files
-    if( is_admin() )
-    {
-        require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpAdmin.php');
-        require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaign.php');
-        require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaigns.php');
-        require_once( MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaignMetabox.php');
-        $MCCAdmin = new MailchimpAdmin();       
-    } 
+    if (is_admin()) {
+        require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpAdmin.php');
+        require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaign.php');
+        require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaigns.php');
+        require_once(MCC_PLUGIN_ROOT_DIR . 'class/MailchimpCampaignMetabox.php');
+        $MCCAdmin = new MailchimpAdmin();
+    }
 }
-add_action( 'init', 'mailchimpcampaigns_init' );
+add_action('init', 'mailchimpcampaigns_init');
 
 /**
  * Add Metaboxes to CPT admin screens
  */
-function mailchimpcampaigns_edit_screen(){
+function mailchimpcampaigns_edit_screen()
+{
     global $post;
     $MCCampaignsMetabox = new MailchimpCampaignMetabox($post);
 }
@@ -125,31 +131,35 @@ add_action('load-post-new.php', 'mailchimpcampaigns_edit_screen', 10, 2);
  * @param $links
  * @param $file
  */
-function mailchimpcampaigns_settings_link($links, $file) {
+function mailchimpcampaigns_settings_link($links, $file)
+{
     static $this_plugin;
-    if (!$this_plugin)
+    if (!$this_plugin) {
         $this_plugin = plugin_basename(__FILE__);
-    if ($file == $this_plugin){
+    }
+    if ($file == $this_plugin) {
         $settings_link = '<a href="options-general.php?page=mailchimpcampaigns-admin">'.__('Settings', MCC_TEXT_DOMAIN).'</a>';
         array_unshift($links, $settings_link);
     }
     return $links;
 }
-add_filter('plugin_action_links', 'mailchimpcampaigns_settings_link', 10, 2 );
+add_filter('plugin_action_links', 'mailchimpcampaigns_settings_link', 10, 2);
 
 /**
  * Rewrite flush
  * Used on plugin activation hook to register our post type
  */
-function mailchimpcampaigns_rewrite_flush() {
+function mailchimpcampaigns_rewrite_flush()
+{
     flush_rewrite_rules();
 }
-register_activation_hook( __FILE__, 'mailchimpcampaigns_rewrite_flush' );
+register_activation_hook(__FILE__, 'mailchimpcampaigns_rewrite_flush');
 
 /**
  * Syncronize CPT with Mailchimp
  */
-function mailchimpcampaigns_sync(){
+function mailchimpcampaigns_sync()
+{
     $MCCampaigns = get_transient('mailchimpcampaigns_mcc_campaigns', new MailchimpCampaigns());
     $MCCampaigns->save();
 }
@@ -159,41 +169,49 @@ function mailchimpcampaigns_sync(){
  * Aims to solve issues with previous versions
  * @return void
  */
-function mailchimpcampaigns_compatibilty() {
+function mailchimpcampaigns_compatibilty()
+{
     // Save the previous API Key and delete it
     $old_api_key = get_option('ola_mccp_api_key', false) || get_option('olalaweb_mailchimp_api_key', false);
-    $settings = array( 'api_key' => $old_api_key); 
-    if ( $old_api_key ) {
+    $settings = array( 'api_key' => $old_api_key);
+    if ($old_api_key) {
         // Delete previous option entries
-        if ( get_option('ola_mccp_api_key', false) ) 
+        if (get_option('ola_mccp_api_key', false)) {
             delete_option('ola_mccp_api_key');
-        if ( get_option('olalaweb_mailchimp_api_key', false) )
+        }
+        if (get_option('olalaweb_mailchimp_api_key', false)) {
             delete_option('olalaweb_mailchimp_api_key');
+        }
         // Save new settings
-        add_option('mailchimpcampaigns_settings', $settings ); // return nothing it already exists
-        update_option('mailchimpcampaigns_settings', $settings );// update it just in case
+        add_option('mailchimpcampaigns_settings', $settings); // return nothing it already exists
+        update_option('mailchimpcampaigns_settings', $settings);// update it just in case
     }
 }
-register_activation_hook( __FILE__, 'mailchimpcampaigns_rewrite_flush' );
+register_activation_hook(__FILE__, 'mailchimpcampaigns_rewrite_flush');
 
 /**
 *
 */
-function mailchimpcampaigns_embed_filter() {
+function mailchimpcampaigns_embed_filter()
+{
     global $post;
     $metas = get_post_meta($post->ID);
     $output = ''.
         $metas['mcc_content_html'][0].
     '';
-    echo $output; 
-}; 
-add_action( 'embed_content', 'mailchimpcampaigns_embed_filter', 10, 0); 
+    echo $output;
+};
+add_action('embed_content', 'mailchimpcampaigns_embed_filter', 10, 0);
 
 /**
  * Shortcodes
  */
-function  mailchimpcampaigns_shutdown_shortcode(){return;}
-function  mailchimpcampaigns_compatibilty_shortcode(){
+function mailchimpcampaigns_shutdown_shortcode()
+{
+    return;
+}
+function mailchimpcampaigns_compatibilty_shortcode()
+{
     // re-register old shortcodes with a dummy return function
     // for back-compatibility with v1.0.0
     $old_shortcodes = array(
@@ -205,18 +223,19 @@ function  mailchimpcampaigns_compatibilty_shortcode(){
         'campaign-id',
         'cid'
     );
-    foreach($old_shortcodes as $shortcode){
-        add_shortcode ( $shortcode, 'mailchimpcampaigns_shutdown_shortcode' );
+    foreach ($old_shortcodes as $shortcode) {
+        add_shortcode($shortcode, 'mailchimpcampaigns_shutdown_shortcode');
     }
 }
-function mailchimpcampaigns_campaign_shortcode( $atts ) {
+function mailchimpcampaigns_campaign_shortcode($atts)
+{
     $content = '';
     $settings = get_option('mailchimpcampaigns_settings', false);
-    $cpt = ! empty( $settings['cpt'] ) ? $settings['cpt'] : MCC_DEFAULT_CPT;
+    $cpt = ! empty($settings['cpt']) ? $settings['cpt'] : MCC_DEFAULT_CPT;
     // Attributes
-    extract( shortcode_atts( array( 'id' => '', 'height' => 600, 'width' => 800 ), $atts ) );
+    extract(shortcode_atts(array( 'id' => '', 'height' => 600, 'width' => 800 ), $atts));
     // Code
-    if ( isset( $id ) ) {
+    if (isset($id)) {
         // Query the dabatase
         $args = array(
             'post_type'  => $cpt,
@@ -229,10 +248,11 @@ function mailchimpcampaigns_campaign_shortcode( $atts ) {
             )
         );
         // Get post
-        $posts = get_posts( $args );
-        if( isset($posts[0]) )
-            $content = get_post_embed_html( $width, $height, $posts[0]);
+        $posts = get_posts($args);
+        if (isset($posts[0])) {
+            $content = get_post_embed_html($width, $height, $posts[0]);
+        }
         return $content;
     }
 }
-add_shortcode( 'campaign', 'mailchimpcampaigns_campaign_shortcode' );
+add_shortcode('campaign', 'mailchimpcampaigns_campaign_shortcode');
